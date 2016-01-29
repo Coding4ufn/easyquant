@@ -22,7 +22,7 @@ class MainEngine:
         self.user.prepare(need_data)
 
         self.event_engine = EventEngine()
-        self.quotation_engine = Quotation(self.event_engine)
+        #self.quotation_engine = Quotation(self.event_engine)
 
         self.event_engine.register(EventType.TIMER, self.second_click)
 
@@ -38,7 +38,7 @@ class MainEngine:
     def start(self):
         """启动主引擎"""
         self.event_engine.start()
-        self.quotation_engine.start()
+        #self.quotation_engine.start()
 
     def load_strategy(self):
         """动态加载策略，未完成，隔离策略之间的变量"""
@@ -52,7 +52,7 @@ class MainEngine:
             strategy_module = importlib.import_module('.' + strategy_module_name, 'strategies')
             self.strategy_list.append(getattr(strategy_module, 'Strategy')(self.user))
         for strategy in self.strategy_list:
-            self.event_engine.register(EventType.QUOTATION, strategy.run)
+            self.event_engine.register(EventType.TIMER, strategy.run)
         log.info('加载策略完毕')
 
     def quotation_test(self, event):

@@ -1,10 +1,12 @@
 from easyquant import StrategyTemplate
-
+from logbook import Logger
+import os
+log = Logger(os.path.basename(__file__))
 
 class Strategy(StrategyTemplate):
     def strategy(self, event):
         #print(self.user.balance)
-        #print(self.user.position)
+        log.info(self.user.position)
 
         positions = self.user.position
 
