@@ -53,6 +53,10 @@ class MainEngine:
             self.strategy_list.append(getattr(strategy_module, 'Strategy')(self.user))
         for strategy in self.strategy_list:
             self.event_engine.register(EventType.TIMER, strategy.run)
+            self.event_engine.register(EventType.TIMER, strategy.handle_dataNull)
+            self.event_engine.register(EventType.TIMER, strategy.before_trading_startNull)
+            self.event_engine.register(EventType.TIMER, strategy.after_trading_endNull)
+            strategy.initializeNull()
         log.info('加载策略完毕')
 
     def quotation_test(self, event):

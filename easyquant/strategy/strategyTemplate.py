@@ -2,6 +2,7 @@
 import os
 import sys
 from logbook import Logger, StreamHandler
+from datetime import *  
 
 
 class StrategyTemplate:
@@ -52,3 +53,33 @@ class StrategyTemplate:
         except Exception as e:
             self.log.error(e)
 
+    def initializeNull(self):
+        self.initialize(self.user)
+
+    def initialize(self,context):
+        pass
+
+    def handle_dataNull(self,event):
+        self.handle_data(self.user, event.data)
+
+    def handle_data(self,context, data):
+        pass
+
+    def before_trading_startNull(self,event):
+        t = time(9,20,0)
+        now =  datetime.now().time()
+        if t.hour == now.hour and t.minute == now.minute and t.second == now.second:
+            self.before_trading_start(self.user)
+
+
+    def before_trading_start(self,context):
+        self.log.info("before_trading_start is not define")
+
+    def after_trading_endNull(self,event):
+        t = time(15,10,0)
+        now =  datetime.now().time()
+        if t.hour == now.hour and t.minute == now.minute and t.second == now.second:
+            self.after_trading_end(self.user)
+
+    def after_trading_end(self,context):
+        self.log.info("after_trading_end is not define")

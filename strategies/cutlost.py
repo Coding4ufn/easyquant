@@ -4,9 +4,13 @@ import os
 log = Logger(os.path.basename(__file__))
 
 class Strategy(StrategyTemplate):
+
+    def initialize(self,context):
+        print("cutlost initialize")
+
     def strategy(self, event):
         #print(self.user.balance)
-        log.info(self.user.position)
+        #log.info(self.user.position)
 
         positions = self.user.position
 
