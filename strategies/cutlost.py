@@ -20,3 +20,7 @@ class Strategy(StrategyTemplate):
                 print("sell by cut lost:")
                 print(position)
                 self.user.sell(stock_code = position['stock_code'],price = position['last_price'],amount = position['enable_amount'])
+
+    def handle_data(self,context, data):
+        pass
+        #log.info("cutlost handledata")

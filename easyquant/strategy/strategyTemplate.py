@@ -5,6 +5,7 @@ from logbook import Logger, StreamHandler
 from datetime import *  
 
 
+
 class StrategyTemplate:
     def __init__(self, user):
         self.user = user
@@ -60,10 +61,16 @@ class StrategyTemplate:
         pass
 
     def handle_dataNull(self,event):
-        self.handle_data(self.user, event.data)
+        startm = time(9,30,0)
+        endm = time(11,30,0)
+        starta = time(13,00,0)
+        enda = time(15,00,0)
+        now =  datetime.now().time()
+        if (now >= startm and now <endm) or (now >= starta and now <enda):
+            self.handle_data(self.user, event.data)
 
     def handle_data(self,context, data):
-        pass
+        self.log.info("handle_data")
 
     def before_trading_startNull(self,event):
         t = time(9,20,0)
