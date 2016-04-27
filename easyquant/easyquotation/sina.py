@@ -13,7 +13,8 @@ class Sina:
     def __init__(self):
         self.grep_stock_detail = re.compile(r'(\d+)=([^\s][^,]+?)%s' % (r',([\.\d]+)' * 29, ))
         self.sina_stock_api = 'http://hq.sinajs.cn/?format=text&list='
-        self.sina_ticks_api = 'http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_Transactions.getAllPageTime?date=%s&symbol=%s'
+        #self.sina_ticks_api = 'http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_Transactions.getAllPageTime?date=%s&symbol=%s'
+        self.sina_ticks_api = 'https://analyse.leverfun.com/analyse/eom_prices?stockCode=%s'
         self.stock_data = []
         self.stock_codes = []
         self.stock_with_exchange_list = []
@@ -23,11 +24,11 @@ class Sina:
         self.stock_with_exchange_list = list(
                 map(lambda stock_code: ('sh%s' if stock_code.startswith(('5', '6', '9')) else 'sz%s') % stock_code,
                     self.stock_codes))
-        tmp = list(
+        self.stock_zxb = list(
                 filter(lambda stock_code: stock_code.startswith('002'),self.stock_codes))
         self.stock_with_exchange_list_zxb = list(
-                map(lambda stock_code: ('sz%s') % stock_code,tmp))
-        print(self.stock_with_exchange_list_zxb)
+                map(lambda stock_code: ('sz%s') % stock_code,self.stock_zxb))
+        #print(self.stock_with_exchange_list_zxb)
 
 
         self.stock_list = []
@@ -43,20 +44,22 @@ class Sina:
             self.stock_codes = json.load(f)['stock']
 
     #'http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_Transactions.getAllPageTime?date=%s&symbol=%s'
+    #https://analyse.leverfun.com/analyse/eom_prices?stockCode=002220
+    #{"g":成交金额,"f":成交量,"d":累计成交量,"a":"时间","b":当前价,"c":均价,"e":累计成交额}
     @property
     def ticks(self):
         return self.get_ticks_data()
 
     async def get_ticks_by_range(self, index):
         date = str( datetime.datetime.today().date())
-        async with aiohttp.get(self.sina_ticks_api %( date,self.stock_with_exchange_list_zxb[index])) as r:
+        async with aiohttp.get(self.sina_ticks_api % self.stock_zxb[index] ) as r:
             response_text = await r.text()
             print(response_text)
             #self.stock_data.append(response_text)
 
     def get_ticks_data(self):
         threads = []
-        for index in range(len(self.stock_with_exchange_list_zxb)):
+        for index in range(len(self.stock_zxb)):
             threads.append(self.get_ticks_by_range(index))
         try:
             loop = asyncio.get_event_loop()
