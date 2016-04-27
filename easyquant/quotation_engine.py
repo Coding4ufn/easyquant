@@ -1,4 +1,4 @@
-# coding: utf-8
+# Coding: utf-8
 import time
 from threading import Thread
 from .event_engine import Event
