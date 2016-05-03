@@ -2,8 +2,8 @@ import re
 import json
 import asyncio
 import aiohttp
-#from . import helpers
-import helpers
+from . import helpers
+#import helpers
 import datetime
 
 
@@ -54,7 +54,7 @@ class Sina:
         date = str( datetime.datetime.today().date())
         async with aiohttp.get(self.sina_ticks_api % self.stock_zxb[index] ) as r:
             response_text = await r.text()
-            print(response_text)
+            #print(response_text)
             #self.stock_data.append(response_text)
 
     def get_ticks_data(self):
@@ -135,4 +135,4 @@ class Sina:
 
 if __name__ == "__main__":
     source =  Sina()
-    print(source.ticks)
+    print(source.all)

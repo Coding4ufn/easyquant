@@ -62,6 +62,8 @@ class EventEngine:
         # 事件字典，key 为时间， value 为对应监听事件函数的列表
         self.__handlers = defaultdict(list)
 
+        self.__event = Event(event_type=EventType.TIMER)
+
     def __run(self):
         """启动引擎"""
         while self.__active:
@@ -81,7 +83,7 @@ class EventEngine:
 
     def __on_timer(self):
         """向事件队列中存入计时器事件"""
-        event = Event(event_type=EventType.TIMER)
+        event = Event(event_type=EventType.TIMER,data = self.__event.data)
         self.put(event)
 
     def start(self):
@@ -112,3 +114,4 @@ class EventEngine:
 
     def put(self, event):
         self.__queue.put(event)
+        self.__event =  event

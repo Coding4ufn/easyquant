@@ -23,7 +23,9 @@ class Quotation:
             response_data = self.source.all
             event = Event(event_type=EventType.QUOTATION, data=response_data)
             self.event_engine.put(event)
-            time.sleep(1)
+            #print("get sina data")
+            #print(event.data)
+            time.sleep(0.8)
 
     def stop(self):
         self.is_active = False
