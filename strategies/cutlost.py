@@ -1,6 +1,7 @@
 from easyquant import StrategyTemplate
 from logbook import Logger
 import os
+import tushare as ts
 log = Logger(os.path.basename(__file__))
 
 class Strategy(StrategyTemplate):
@@ -41,10 +42,12 @@ class Strategy(StrategyTemplate):
                 and v['ask5_volume']  == 0 and not v['name'].startswith('ST')
                 and not v['name'].startswith('*ST') and not k.startswith('300')
                 and v['ask1'] < 50):
-                self.user.buy(stock_code = k,price = v['ask1'],volume = self.user.balance[0]['enable_balance'])
+                h=ts.get_hist_data(k).head(2)
+                pc = h.p_change.sum()
+                if(pc < 12):
+                    self.user.buy(stock_code = k,price = v['ask1'],volume = self.user.balance[0]['enable_balance'])
                 print(k)
                 print(v)
-                print(k)
                 print(v['ask1'])
                 print(self.user.balance[0]['enable_balance'])
         #print(data.data)
