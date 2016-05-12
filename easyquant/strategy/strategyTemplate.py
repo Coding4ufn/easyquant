@@ -64,7 +64,7 @@ class StrategyTemplate:
         startm = time(9,30,0)
         endm = time(11,30,0)
         starta = time(13,00,0)
-        enda = time(15,00,0)
+        enda = time(14,50,0)
         now =  datetime.now().time()
         if (now >= startm and now <endm) or (now >= starta and now <enda):
             self.handle_data(self.user, event.data)
